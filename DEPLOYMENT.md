@@ -51,7 +51,7 @@ chmod +x scripts/quick-deploy.sh
 
 3. **Push to GitHub**
    ```bash
-   git remote add origin https://github.com/YOUR_USERNAME/watsonx-innovation-hub.git
+   git remote add origin https://github.com/ChrisDamian/watsonx-innovation-hub
    git push -u origin main
    ```
 
