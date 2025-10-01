@@ -1,0 +1,142 @@
+{
+  "name": "@watsonx-hub/mental-health",
+  "version": "1.0.0",
+  "description": "Mental Health AI Module with DSM-5-TR integration for Watsonx Innovation Hub",
+  "main": "dist/server.js",
+  "scripts": {
+    "dev": "nodemon --exec ts-node src/server.ts",
+    "build": "tsc",
+    "start": "node dist/server.js",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage",
+    "lint": "eslint src/**/*.ts",
+    "format": "prettier --write src/**/*.ts",
+    "dsm:download": "node scripts/download-dsm-dataset.js",
+    "dsm:prepare": "python scripts/prepare_dsm_data.py",
+    "dsm:validate": "python scripts/validate_dsm_data.py",
+    "dsm:train:basic": "bash scripts/train-dsm-basic.sh",
+    "dsm:train:advanced": "bash scripts/train-dsm-advanced.sh",
+    "dsm:train:dsm5": "DSM_VERSION=DSM-5 npm run dsm:train:basic",
+    "dsm:train:dsm5tr": "DSM_VERSION=DSM-5-TR npm run dsm:train:advanced",
+    "dsm:train:icd11": "DSM_VERSION=ICD-11 npm run dsm:train:advanced",
+    "clinical:validate": "python scripts/clinical_validation.py",
+    "security:scan": "npm audit && snyk test",
+    "compliance:check": "node scripts/compliance-check.js",
+    "deploy:dev": "docker build -t mental-health:dev -f Dockerfile.mental-health .",
+    "deploy:staging": "docker build -t mental-health:staging -f Dockerfile.mental-health . && docker push",
+    "deploy:prod": "docker build -t mental-health:prod -f Dockerfile.mental-health . && docker push",
+    "k8s:deploy": "kubectl apply -f k8s/",
+    "k8s:delete": "kubectl delete -f k8s/",
+    "migrate:up": "node scripts/migrate-up.js",
+    "migrate:down": "node scripts/migrate-down.js",
+    "seed:data": "node scripts/seed-mental-health-data.js"
+  },
+  "dependencies": {
+    "@ibm-cloud/watsonx-ai": "^1.0.0",
+    "express": "^4.18.2",
+    "cors": "^2.8.5",
+    "helmet": "^7.1.0",
+    "dotenv": "^16.3.1",
+    "jsonwebtoken": "^9.0.2",
+    "bcryptjs": "^2.4.3",
+    "mongoose": "^8.0.3",
+    "pg": "^8.11.3",
+    "redis": "^4.6.10",
+    "axios": "^1.6.2",
+    "winston": "^3.11.0",
+    "joi": "^17.11.0",
+    "multer": "^1.4.5-lts.1",
+    "socket.io": "^4.7.4",
+    "crypto-js": "^4.2.0",
+    "rate-limiter-flexible": "^3.0.8",
+    "express-validator": "^7.0.1",
+    "compression": "^1.7.4",
+    "morgan": "^1.10.0",
+    "uuid": "^9.0.1",
+    "moment": "^2.29.4",
+    "lodash": "^4.17.21",
+    "natural": "^6.12.0",
+    "compromise": "^14.10.0",
+    "sentiment": "^5.0.2"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.21",
+    "@types/cors": "^2.8.17",
+    "@types/jsonwebtoken": "^9.0.5",
+    "@types/bcryptjs": "^2.4.6",
+    "@types/pg": "^8.10.9",
+    "@types/multer": "^1.4.11",
+    "@types/node": "^20.10.4",
+    "@types/jest": "^29.5.8",
+    "@types/uuid": "^9.0.7",
+    "@types/lodash": "^4.14.202",
+    "typescript": "^5.3.3",
+    "nodemon": "^3.0.2",
+    "ts-node": "^10.9.1",
+    "jest": "^29.7.0",
+    "ts-jest": "^29.1.1",
+    "eslint": "^8.55.0",
+    "@typescript-eslint/eslint-plugin": "^6.13.1",
+    "@typescript-eslint/parser": "^6.13.1",
+    "prettier": "^3.1.0",
+    "supertest": "^6.3.3",
+    "mongodb-memory-server": "^9.1.3",
+    "snyk": "^1.1266.0"
+  },
+  "keywords": [
+    "mental-health",
+    "dsm-5-tr",
+    "watsonx",
+    "ai",
+    "healthcare",
+    "multilingual",
+    "hipaa",
+    "clinical-ai"
+  ],
+  "author": "Watsonx Innovation Hub Team",
+  "license": "MIT",
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=9.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/your-org/watsonx-hub.git",
+    "directory": "modules/mental-health"
+  },
+  "bugs": {
+    "url": "https://github.com/your-org/watsonx-hub/issues"
+  },
+  "homepage": "https://github.com/your-org/watsonx-hub/tree/main/modules/mental-health#readme",
+  "jest": {
+    "preset": "ts-jest",
+    "testEnvironment": "node",
+    "roots": ["<rootDir>/src"],
+    "testMatch": ["**/__tests__/**/*.ts", "**/?(*.)+(spec|test).ts"],
+    "collectCoverageFrom": [
+      "src/**/*.ts",
+      "!src/**/*.d.ts",
+      "!src/types/**/*.ts"
+    ],
+    "coverageThreshold": {
+      "global": {
+        "branches": 80,
+        "functions": 80,
+        "lines": 80,
+        "statements": 80
+      }
+    }
+  },
+  "eslintConfig": {
+    "extends": [
+      "@typescript-eslint/recommended"
+    ],
+    "parser": "@typescript-eslint/parser",
+    "plugins": ["@typescript-eslint"],
+    "rules": {
+      "@typescript-eslint/no-unused-vars": "error",
+      "@typescript-eslint/explicit-function-return-type": "warn"
+    }
+  }
+}
